@@ -41,3 +41,15 @@ export const deleteTodo = (id) => {
         method: "DELETE"
     }).then(res => res.json);
 }
+
+export const createUser = (account) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/users`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            userid: String(account)
+        })
+    }).then((res) => res.json());
+};
