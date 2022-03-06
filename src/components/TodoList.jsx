@@ -7,13 +7,18 @@ import {createTodo, deleteTodo, loadTodos, updateTodo} from '../services/todoSer
 const {TabPane} = Tabs;
 const {Content} = Layout;
 
-const TodoList = () => {
+const TodoList = (props) => {
     const [refreshing, setRefreshing] = useState(false);
     const [todos, setTodos] = useState([]);
     const [activeTodos, setActiveTodos] = useState([]);
     const [completedTodos, setCompletedTodos] = useState();
 
+    function compareID(a, b) {
+        return a.id - b.id;
+    }
+
     const handleFormSubmit = (todo) => {
+        todo.user_id=props.userID;
         console.log('Todo to create', todo);
         createTodo(todo).then(onRefresh());
         message.success('Todo added!');
@@ -30,21 +35,28 @@ const TodoList = () => {
         message.info('Todo status updated!');
     }
 
+    const handleUpdateTodo = (todo) => {
+        updateTodo(todo).then(onRefresh());
+        message.info('Todo updated!');
+    }
+
     const refresh = () => {
         loadTodos()
             .then(json => {
-                setTodos(json);
-                setActiveTodos(json.filter(todo => todo.completed === false));
-                setCompletedTodos(json.filter(todo => todo.completed === true));
+                console.log(json);
+                json.sort(compareID);
+                setTodos(json.sort(compareID));
+                setActiveTodos(json.filter(todo => todo.completed === false).sort(compareID));
+                setCompletedTodos(json.filter(todo => todo.completed === true).sort(compareID));
             }).then(console.log('fetch completed'));
     }
 
     const onRefresh = useCallback(async() => {
         setRefreshing(true);
         let data = await loadTodos();
-        setTodos(data);
-        setActiveTodos(data.filter(todo => todo.completed === false));
-        setCompletedTodos(data.filter(todo => todo.completed === true));
+        setTodos(data.sort(compareID));
+        setActiveTodos(data.filter(todo => todo.completed === false).sort(compareID));
+        setCompletedTodos(data.filter(todo => todo.completed === true).sort(compareID));
         setRefreshing(false);
         console.log('Refresh state', refreshing);
     }, [refreshing]);
@@ -66,13 +78,13 @@ const TodoList = () => {
                             <br />
                             <Tabs defaultActiveKey="all">
                                 <TabPane tab="All" key="all">
-                                    <TodoTab todos={todos} onTodoToggle={handleToggleTodoStatus} onTodoRemoval={handleRemoveTodo}/>
+                                    <TodoTab todos={todos} onTodoToggle={handleToggleTodoStatus} onTodoRemoval={handleRemoveTodo} onTodoUpdate={handleUpdateTodo}/>
                                 </TabPane>
                                 <TabPane tab="Active" key="active">
-                                    <TodoTab todos={activeTodos} onTodoToggle={handleToggleTodoStatus} onTodoRemoval={handleRemoveTodo}/>
+                                    <TodoTab todos={activeTodos} onTodoToggle={handleToggleTodoStatus} onTodoRemoval={handleRemoveTodo} onTodoUpdate={handleUpdateTodo}/>
                                 </TabPane>
                                 <TabPane tab="Complete" key="Complete">
-                                    <TodoTab todos={completedTodos} onTodoToggle={handleToggleTodoStatus} onTodoRemoval={handleRemoveTodo}/>
+                                    <TodoTab todos={completedTodos} onTodoToggle={handleToggleTodoStatus} onTodoRemoval={handleRemoveTodo} onTodoUpdate={handleUpdateTodo}/>
                                 </TabPane>
                             </Tabs>
                         </Col>

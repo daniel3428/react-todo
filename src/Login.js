@@ -3,6 +3,8 @@ import TodoList from './components/TodoList'
 import {createUser} from './services/todoService';
 import Web3 from 'web3'
 
+let userID;
+
 const Login = () => {
     const userRef = useRef();
     const errRef = useRef();
@@ -16,9 +18,11 @@ const Login = () => {
         try {
 			const account = await window.ethereum.request({method: 'eth_accounts'});
             let data = await createUser(account[0]).then();
-            console.log(data);
-            if (data == true)
+            //console.log(data);
+            userID = data.id;
+            if (userID == 7) {
                 setSuccess(true);
+            }
             //console.log(account);
 		} catch (error) {
 			console.error(error);
@@ -28,7 +32,7 @@ const Login = () => {
     return (
         <>
             {success ? (
-                <TodoList />
+                <TodoList userID={userID}/>
             ) : (
                 <section>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>

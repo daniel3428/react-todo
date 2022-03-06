@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {Tabs, Layout, Row, Col, List} from 'antd';
 import TodoItem from './TodoItem';
 
-const TodoTab = ({todos, onTodoRemoval, onTodoToggle}) => {
+const TodoTab = ({todos, onTodoRemoval, onTodoToggle, onTodoUpdate}) => {
     return (
         <><List
                 locale={{emptyText: "There's nothing to do...",}}
@@ -12,6 +12,7 @@ const TodoTab = ({todos, onTodoRemoval, onTodoToggle}) => {
                         todo={todo}
                         onTodoToggle={onTodoToggle}
                         onTodoRemoval={onTodoRemoval}
+                        onTodoUpdate={onTodoUpdate}
                     />
                 )}
                 pagination={{

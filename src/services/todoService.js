@@ -1,3 +1,5 @@
+import Web3 from 'web3'
+
 const baseUrl = `${process.env.REACT_APP_API_URL}/todos`;
 //const baseUrl = `http://localhost:8000/todos`;
 
@@ -16,7 +18,10 @@ export const createTodo = (todo) => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
+            itemclass: todo.itemclass,
             title: todo.title,
+            note: todo.note,
+            user_id: todo.user_id,
             completed: todo.completed
         })
     }).then((res) => res.json());
@@ -31,6 +36,8 @@ export const updateTodo = (todo) => {
         body: JSON.stringify({
             id: todo.id,
             title: todo.title,
+            note: todo.note,
+            user_id: todo.user_id,
             completed: todo.completed
         })
     }).then((res) => res.json());
@@ -49,7 +56,11 @@ export const createUser = (account) => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            userid: String(account)
+            userwallet: String(account)
         })
     }).then((res) => res.json());
+};
+
+export const getUser = (userWallet) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/users`).then((res) => res.json());
 };
