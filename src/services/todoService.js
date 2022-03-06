@@ -7,6 +7,10 @@ export const loadTodos = (user_id) => {
     return fetch(`${baseUrl}/${user_id}/todos`).then((res) => res.json());
 }
 
+/*export const loadSecTodos = (user_id, tod_id) => {
+    return fetch(`${baseUrl}/${user_id}/todos/${todo_id}/sec_todos`).then((res) => res.json());
+}*/
+
 export const getTodo = (user_id, id) => {
     return fetch(`${baseUrl}/${user_id}/todos/${id}`).then((res) => res.json());
 }
@@ -28,7 +32,7 @@ export const createTodo = (user_id, todo) => {
 };
 
 export const updateTodo = (user_id, todo) => {
-    console.log(todo);
+    //console.log(todo);
     return fetch(`${baseUrl}/${user_id}/todos/${todo.id}`, {
         method: "PUT",
         headers: {
@@ -40,6 +44,22 @@ export const updateTodo = (user_id, todo) => {
             note: todo.note,
             user_id: todo.user_id,
             completed: todo.completed
+        })
+    }).then((res) => res.json());
+};
+
+export const secTodoAdd = (user_id, todo, sec_todo_title) => {
+    return fetch(`${baseUrl}/${user_id}/todos/${todo.id}/sec_todos`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            itemclass: todo.itemclass,
+            title: sec_todo_title,
+            note: "",
+            todo_id: todo.id,
+            completed: false
         })
     }).then((res) => res.json());
 };

@@ -3,7 +3,7 @@ import {TooltipProps, Tag, List, Button, Popconfirm, Switch, Tooltip, Form, Inpu
 import {CloseOutlined, CheckOutlined} from '@ant-design/icons';
 import {updateTodo} from '../services/todoService';
 
-const Todo = ({todo, onTodoRemoval, onTodoToggle, onTodoUpdate }) => {
+const Todo = ({todo, onTodoRemoval, onTodoToggle, onTodoUpdate, onSecTodoAdd }) => {
     const [form] = Form.useForm();
     const { Title } = Typography;
     
@@ -46,6 +46,19 @@ const Todo = ({todo, onTodoRemoval, onTodoToggle, onTodoUpdate }) => {
                         ◎
                     </Button>
                     </Popconfirm>,
+                /*<Popconfirm
+                title={'Are you sure you want to add sec todo?'}
+                onConfirm={() => {
+                    let sec_todo_title = form.getFieldValue('note');
+                    //console.log(todo);
+                    onSecTodoAdd(todo, sec_todo_title);
+                    //form.setFieldsValue('note', todo.note);
+                    form.resetFields();
+                }}>
+                    <Button className="update-todo-button" type="primary">
+                        +
+                    </Button>
+                    </Popconfirm>,*/
                 <Popconfirm
                 title={'Are you sure you want to delete?'}
                 onConfirm={() => {

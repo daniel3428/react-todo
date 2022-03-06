@@ -3,7 +3,7 @@ import {Tabs, Layout, Row, Col, Input, message} from 'antd';
 import './TodoList.css';
 import TodoTab from './TodoTab';
 import TodoForm from "./TodoForm";
-import {createTodo, deleteTodo, loadTodos, updateTodo} from '../services/todoService';
+import {createTodo, deleteTodo, loadTodos, updateTodo, secTodoAdd} from '../services/todoService';
 const {TabPane} = Tabs;
 const {Content} = Layout;
 
@@ -36,9 +36,15 @@ const TodoList = (props) => {
     }
 
     const handleUpdateTodo = (todo) => {
-        console.log(todo);
+        //console.log(todo);
         updateTodo(props.user_id, todo).then(onRefresh());
         message.info('Todo updated!');
+    }
+
+    const handleSecTodoAdd = (todo, sec_todo_title) => {
+        //console.log(todo);
+        secTodoAdd(props.user_id, todo, sec_todo_title).then(onRefresh());
+        message.info('Sec Todo added!');
     }
 
     const refresh = () => {
@@ -78,13 +84,13 @@ const TodoList = (props) => {
                             <br />
                             <Tabs defaultActiveKey="all">
                                 <TabPane tab="All" key="all">
-                                    <TodoTab todos={todos} onTodoToggle={handleToggleTodoStatus} onTodoRemoval={handleRemoveTodo} onTodoUpdate={handleUpdateTodo}/>
+                                    <TodoTab todos={todos} onTodoToggle={handleToggleTodoStatus} onTodoRemoval={handleRemoveTodo} onTodoUpdate={handleUpdateTodo} onSecTodoAdd={handleSecTodoAdd}/>
                                 </TabPane>
                                 <TabPane tab="Active" key="active">
-                                    <TodoTab todos={activeTodos} onTodoToggle={handleToggleTodoStatus} onTodoRemoval={handleRemoveTodo} onTodoUpdate={handleUpdateTodo}/>
+                                    <TodoTab todos={activeTodos} onTodoToggle={handleToggleTodoStatus} onTodoRemoval={handleRemoveTodo} onTodoUpdate={handleUpdateTodo} onSecTodoAdd={handleSecTodoAdd}/>
                                 </TabPane>
                                 <TabPane tab="Complete" key="Complete">
-                                    <TodoTab todos={completedTodos} onTodoToggle={handleToggleTodoStatus} onTodoRemoval={handleRemoveTodo} onTodoUpdate={handleUpdateTodo}/>
+                                    <TodoTab todos={completedTodos} onTodoToggle={handleToggleTodoStatus} onTodoRemoval={handleRemoveTodo} onTodoUpdate={handleUpdateTodo} onSecTodoAdd={handleSecTodoAdd}/>
                                 </TabPane>
                             </Tabs>
                         </Col>
