@@ -18,45 +18,45 @@ const TodoList = (props) => {
     }
 
     const handleFormSubmit = (todo) => {
-        todo.user_id=props.userID;
+        todo.user_id=props.user_id;
         console.log('Todo to create', todo);
-        createTodo(todo).then(onRefresh());
+        createTodo(props.user_id, todo).then(onRefresh());
         message.success('Todo added!');
     }
 
     const handleRemoveTodo = (todo) => {
-        deleteTodo(todo.id).then(onRefresh());
+        deleteTodo(props.user_id, todo.id).then(onRefresh());
         message.warn('Todo removed');
     }
 
     const handleToggleTodoStatus = (todo) => {
         todo.completed = !todo.completed;
-        updateTodo(todo).then(onRefresh());
+        updateTodo(props.user_id, todo).then(onRefresh());
         message.info('Todo status updated!');
     }
 
     const handleUpdateTodo = (todo) => {
-        updateTodo(todo).then(onRefresh());
+        console.log(todo);
+        updateTodo(props.user_id, todo).then(onRefresh());
         message.info('Todo updated!');
     }
 
     const refresh = () => {
-        loadTodos()
+        loadTodos(props.user_id)
             .then(json => {
-                console.log(json);
-                json.sort(compareID);
-                setTodos(json.sort(compareID));
-                setActiveTodos(json.filter(todo => todo.completed === false).sort(compareID));
-                setCompletedTodos(json.filter(todo => todo.completed === true).sort(compareID));
+                //console.log(json);
+                setTodos(json);
+                setActiveTodos(json.filter(todo => todo.completed === false));
+                setCompletedTodos(json.filter(todo => todo.completed === true));
             }).then(console.log('fetch completed'));
     }
 
     const onRefresh = useCallback(async() => {
         setRefreshing(true);
-        let data = await loadTodos();
-        setTodos(data.sort(compareID));
-        setActiveTodos(data.filter(todo => todo.completed === false).sort(compareID));
-        setCompletedTodos(data.filter(todo => todo.completed === true).sort(compareID));
+        let data = await loadTodos(props.user_id);
+        setTodos(data);
+        setActiveTodos(data.filter(todo => todo.completed === false));
+        setCompletedTodos(data.filter(todo => todo.completed === true));
         setRefreshing(false);
         console.log('Refresh state', refreshing);
     }, [refreshing]);
@@ -69,10 +69,10 @@ const TodoList = (props) => {
 
         
         <Layout className="Layout">
-            <Content style={{padding: '0 50px'}}>
+            <Content style={{padding: '0 0px'}}>
                 <div className="todolist">
                     <Row>
-                        <Col span={14} offset={5}>
+                        <Col span={24} offset={0}>
 
                             <TodoForm onFormSubmit={handleFormSubmit}/>
                             <br />

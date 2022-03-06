@@ -8,6 +8,7 @@ const TodoTab = ({todos, onTodoRemoval, onTodoToggle, onTodoUpdate}) => {
                 locale={{emptyText: "There's nothing to do...",}}
                 dataSource={todos}
                 renderItem={(todo) => (
+
                     <TodoItem
                         todo={todo}
                         onTodoToggle={onTodoToggle}
@@ -17,7 +18,7 @@ const TodoTab = ({todos, onTodoRemoval, onTodoToggle, onTodoUpdate}) => {
                 )}
                 pagination={{
                     position: 'bottom',
-                    pageSize: 10,
+                    pageSize: 30,
                 }}
             /></>
     )

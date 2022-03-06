@@ -1,18 +1,18 @@
 import Web3 from 'web3'
 
-const baseUrl = `${process.env.REACT_APP_API_URL}/todos`;
+const baseUrl = `${process.env.REACT_APP_API_URL}/users/`;
 //const baseUrl = `http://localhost:8000/todos`;
 
-export const loadTodos = () => {
-    return fetch(baseUrl).then((res) => res.json());
+export const loadTodos = (user_id) => {
+    return fetch(`${baseUrl}/${user_id}/todos`).then((res) => res.json());
 }
 
-export const getTodo = (id) => {
-    return fetch(`${baseUrl}/${id}`).then((res) => res.json());
+export const getTodo = (user_id, id) => {
+    return fetch(`${baseUrl}/${user_id}/todos/${id}`).then((res) => res.json());
 }
 
-export const createTodo = (todo) => {
-    return fetch(baseUrl, {
+export const createTodo = (user_id, todo) => {
+    return fetch(`${baseUrl}/${user_id}/todos`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -27,8 +27,9 @@ export const createTodo = (todo) => {
     }).then((res) => res.json());
 };
 
-export const updateTodo = (todo) => {
-    return fetch(`${baseUrl}/${todo.id}`, {
+export const updateTodo = (user_id, todo) => {
+    console.log(todo);
+    return fetch(`${baseUrl}/${user_id}/todos/${todo.id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -43,8 +44,8 @@ export const updateTodo = (todo) => {
     }).then((res) => res.json());
 };
 
-export const deleteTodo = (id) => {
-    return fetch(`${baseUrl}/${id}`, {
+export const deleteTodo = (user_id, id) => {
+    return fetch(`${baseUrl}/${user_id}/todos/${id}`, {
         method: "DELETE"
     }).then(res => res.json);
 }

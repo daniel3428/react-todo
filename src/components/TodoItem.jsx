@@ -1,27 +1,28 @@
 import React, {useState, useEffect, useCallback} from "react";
-import {TooltipProps, Tag, List, Button, Popconfirm, Switch, Tooltip, Form, Input} from 'antd';
+import {TooltipProps, Tag, List, Button, Popconfirm, Switch, Tooltip, Form, Input, Typography, Row, Col} from 'antd';
 import {CloseOutlined, CheckOutlined} from '@ant-design/icons';
 import {updateTodo} from '../services/todoService';
 
 const Todo = ({todo, onTodoRemoval, onTodoToggle, onTodoUpdate }) => {
     const [form] = Form.useForm();
-    const [refreshing, setRefreshing] = useState(false);
-
-    const onRefresh = useCallback(async() => {
-        setRefreshing(true);
-        setRefreshing(false);
-        console.log('Refresh todoItem', refreshing);
-    }, [refreshing]);
-
-    useEffect(() => {
-    }, [onRefresh])
-
-    const onFinish = () => {
-    }
+    const { Title } = Typography;
     
     return (
+        
         <List.Item
             actions={[
+                <Form
+                form={form}
+                layout="horizontal"
+                className='todo-note'>
+                        <Form.Item
+                            name={'note'}
+                            rules={[{ required: false, message: 'Note' }]}>
+                                
+                                
+                            <Input placeholder="Take some note"></Input>
+                        </Form.Item>
+                </Form>,
                 <Tooltip
                     title={todo.completed?'Mark as uncompleted':'Mark as completed'}>
                     <Switch
@@ -36,8 +37,9 @@ const Todo = ({todo, onTodoRemoval, onTodoToggle, onTodoUpdate }) => {
                 title={'Are you sure you want to update?'}
                 onConfirm={() => {
                     todo.note = form.getFieldValue('note');
-                    updateTodo(todo).then(onRefresh());
-                    form.setFieldsValue('note', todo.note);
+                    console.log(todo);
+                    onTodoUpdate(todo);
+                    //form.setFieldsValue('note', todo.note);
                     form.resetFields();
                 }}>
                     <Button className="update-todo-button" type="primary">
@@ -60,33 +62,44 @@ const Todo = ({todo, onTodoRemoval, onTodoToggle, onTodoUpdate }) => {
             className="list-item"
             key={todo.id}
             >
-
-            
-            <div className="todo-item">
-                <Tag color={todo.completed?'cyan':'red'} className="todo-tag">
-                    {todo.title}
-                </Tag>
                 
-            </div>
+                
+            <Row>
+            
+            
+            <div>
+                <Tag color={todo.completed?'cyan':'red'} className="todo-tag">
+                    {todo.itemclass}
+                </Tag>
+                </div>
+                
+                <div style={{ marginRight: '.5rem' }}>
+                <Title level={4} className="todo-title">
+                    {todo.title}
+                </Title>
+                </div>
+                <div>
+                <Title level={4} className="todo-title">
+                    {todo.note}
+                </Title>
+                </div>
 
-            <Form
-            form={form}
-            onFinish={onFinish}
-            layout="horizontal"
-            className='todo-note'>
-                    <Form.Item
-                        name={'note'}
-                        rules={[{ required: false, message: 'Note' }]}
-                        initialValue={todo.note}>
-                            
-                        <Input placeholder="Take some note"></Input>
-                    </Form.Item>
-            </Form>
+              
+             
+      
+                </Row>
+                
+            
+            
+            
 
             
 
             
         </List.Item>
+        
+       
+
     )
 }
 

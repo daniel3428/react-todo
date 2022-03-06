@@ -20,9 +20,7 @@ const Login = () => {
             let data = await createUser(account[0]).then();
             //console.log(data);
             userID = data.id;
-            if (userID == 7) {
-                setSuccess(true);
-            }
+            setSuccess(true);
             //console.log(account);
 		} catch (error) {
 			console.error(error);
@@ -32,7 +30,7 @@ const Login = () => {
     return (
         <>
             {success ? (
-                <TodoList userID={userID}/>
+                <TodoList user_id={userID}/>
             ) : (
                 <section>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
